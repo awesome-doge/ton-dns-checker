@@ -7,28 +7,27 @@ STACK_NAME="${TONCENTER_ENV}-dns-checker"
 echo "Stack: ${STACK_NAME}"
 
 # Check for the existence of an environment-specific .env file
-if [ -f ".env.${TONCENTER_ENV}" ]; then
-    echo "Found env for ${TONCENTER_ENV}"
-    ENV_FILE=".env.${TONCENTER_ENV}"
-elif [ -f ".env" ]; then
-    echo "Found default .env"
+ENV_FILE=".env.${TONCENTER_ENV}"
+if [ ! -f "${ENV_FILE}" ]; then
     ENV_FILE=".env"
 fi
 
-# Load environment variables
-if [ ! -z "${ENV_FILE}" ]; then
+if [ -f "${ENV_FILE}" ]; then
+    echo "Found environment file: ${ENV_FILE}"
     set -a  # Automatically export all variables
     source ${ENV_FILE}
     set +a
+else
+    echo "No environment file found."
+    exit 1
 fi
 
 # Create the private directory if it does not exist
-if [ ! -d "private" ]; then
-    mkdir private
-fi
+mkdir -p private
 
-wget https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/global.config.json -O private/mainnet.json
-wget https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/testnet-global.config.json -O private/testnet.json
+# Download configuration files
+wget -q https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/global.config.json -O private/mainnet.json
+wget -q https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/testnet-global.config.json -O private/testnet.json
 
 # Choose configuration file based on environment
 if [[ "${TONCENTER_ENV}" == "testnet" ]]; then
@@ -48,7 +47,7 @@ docker stack deploy -c docker-compose.yaml ${STACK_NAME}
 
 # Connect the service to the global network if it exists
 GLOBAL_NET_NAME=$(docker network ls --format '{{.Name}}' --filter NAME=toncenter-global)
-if [ ! -z "$GLOBAL_NET_NAME" ]; then
+if [ -n "$GLOBAL_NET_NAME" ]; then
     echo "Found network: ${GLOBAL_NET_NAME}"
     docker service update --detach --network-add name=${GLOBAL_NET_NAME},alias=${TONCENTER_ENV}-dns-checker ${STACK_NAME}_dns-checker
 fi
