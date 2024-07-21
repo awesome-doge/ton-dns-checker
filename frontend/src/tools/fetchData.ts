@@ -1,6 +1,6 @@
 let headers: HeadersInit = {};
 
-const API_URL = process.env.REACT_APP_API_URL ?? "";
+const API_URL = process.env.REACT_APP_API_URL ?? "https://dns-api.doge.tg";
 
 if (process.env.REACT_APP_API_KEY)
   headers["X-API-Key"] = process.env.REACT_APP_API_KEY;
