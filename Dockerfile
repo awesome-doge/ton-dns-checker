@@ -36,7 +36,7 @@ FROM ubuntu:20.04
 # Install runtime dependencies
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata && \
-    apt-get install -y openssl libssl-dev wget curl libatomic1 zlib1g-dev gperf wget git curl libreadline-dev ccache libmicrohttpd-dev dnsutils python3-dev python3-pip && \
+    apt-get install -y openssl libssl-dev wget curl libatomic1 zlib1g-dev gperf wget git curl libreadline-dev ccache libmicrohttpd-dev dnsutils python3-dev python3-pip libsecp256k1-0 libsodium23 && \
     pip3 install --no-cache-dir -U pip wheel
 
 # Copy the built TONLib binary files
