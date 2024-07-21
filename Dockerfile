@@ -4,7 +4,7 @@ FROM ubuntu:20.04 as builder
 # Install basic tools and dependencies
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata && \
-    apt-get install -y build-essential cmake clang openssl libssl-dev zlib1g-dev gperf wget git curl libreadline-dev ccache libmicrohttpd-dev ninja-build pkg-config libsecp256k1-dev libsodium-dev
+    apt-get install -y build-essential cmake clang openssl libssl-dev zlib1g-dev gperf wget git curl libreadline-dev ccache libmicrohttpd-dev ninja-build pkg-config libsecp256k1-dev libsodium-dev  liblz4-dev
 
 # Clone the TON repository and check out a specific branch
 ARG TON_REPO=ton-blockchain
