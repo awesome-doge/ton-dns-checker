@@ -37,6 +37,10 @@ These instructions will get you a copy of the project up and running on your loc
    Use Docker Compose to build and start the services defined in the `docker-compose.yml` file.
 
    ```sh
+   sudo bash deploy.sh
+   ```
+   
+   ```sh
    docker-compose up --build
    ```
 
