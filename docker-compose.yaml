@@ -4,6 +4,7 @@ services:
   # Redis caching service configuration
   dns-checker-cache:
     image: redis:latest  # Use the latest version of Redis
+    container_name: dns-checker-redis  # Set the container name
     networks:
       - main  # Connect to a network named 'main'
     deploy:
@@ -15,6 +16,7 @@ services:
 
   # DNS checker service configuration
   dns-checker:
+    container_name: dns-checker  # Set the container name
     build:
       context: .  # Context directory for Docker build
       dockerfile: Dockerfile  # Path to the Dockerfile
@@ -43,6 +45,7 @@ services:
 
   # Frontend service configuration
   frontend:
+    container_name: dns-checker-frontend
     build:
       context: ./frontend
       args:
