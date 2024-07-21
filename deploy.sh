@@ -22,6 +22,10 @@ if [ ! -z "${ENV_FILE}" ]; then
     set +a
 fi
 
+mkdir private
+wget https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/global.config.json -O private/mainnet.json
+wget https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/test.config.json -O private/testnet.json
+
 # Choose configuration file based on environment
 if [[ "${TONCENTER_ENV}" == "testnet" ]]; then
     echo "Using testnet config"
@@ -32,8 +36,8 @@ else
 fi
 
 # Build and push Docker images
-docker compose build
-docker compose push
+docker-compose build
+docker-compose push
 
 # Deploy the stack using docker-compose.yaml
 docker stack deploy -c docker-compose.yaml ${STACK_NAME}
