@@ -24,7 +24,7 @@ fi
 
 mkdir private
 wget https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/global.config.json -O private/mainnet.json
-wget https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/test.config.json -O private/testnet.json
+wget https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/testnet-global.config.json -O private/testnet.json
 
 # Choose configuration file based on environment
 if [[ "${TONCENTER_ENV}" == "testnet" ]]; then
