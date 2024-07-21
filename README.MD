@@ -39,12 +39,12 @@ These instructions will get you a copy of the project up and running on your loc
    ```sh
    sudo bash deploy.sh
    ```
-   
+
    ```sh
    docker-compose up --build
    ```
 
-   This command builds the images for the services (if not already built) and starts the services. Specifically, it sets up the following:
+   These commands build the images for the services (if not already built) and start the services. Specifically, it sets up the following:
 
    - A Redis caching service.
    - A DNS checker service that runs on port 8090.
@@ -58,3 +58,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 - Access the front-end interface at `http://localhost:8090/docs`.
 - The interface will interact with the DNS checker backend to perform functionalities like DHT node status checking, ADNL address resolution, and more.
+
+## Environment Configuration
+
+Create a `.env` file in the project root directory and add the following code:
+
+```env
+REACT_APP_API_URL="https://dns-api.doge.tg"
+```
+
+This environment variable configures the API URL for the front-end interface to communicate with the backend DNS checker service.
