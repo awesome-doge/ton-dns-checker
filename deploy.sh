@@ -22,7 +22,11 @@ if [ ! -z "${ENV_FILE}" ]; then
     set +a
 fi
 
-mkdir private
+# Create the private directory if it does not exist
+if [ ! -d "private" ]; then
+    mkdir private
+fi
+
 wget https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/global.config.json -O private/mainnet.json
 wget https://raw.githubusercontent.com/ton-blockchain/ton-blockchain.github.io/main/testnet-global.config.json -O private/testnet.json
 
