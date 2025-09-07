@@ -39,8 +39,8 @@ else
 fi
 
 # Build and push Docker images
-docker-compose build
-docker-compose push
+docker compose build
+docker compose push
 
 # Deploy the stack using docker-compose.yaml
 docker stack deploy -c docker-compose.yaml ${STACK_NAME}

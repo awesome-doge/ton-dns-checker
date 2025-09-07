@@ -1,10 +1,10 @@
 # First Stage: Build TONLib (builder)
-FROM ubuntu:20.04 as builder
+FROM ubuntu:22.04 as builder
 
 # Install basic tools and dependencies
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata && \
-    apt-get install -y build-essential cmake clang openssl libssl-dev zlib1g-dev gperf wget git curl libreadline-dev ccache libmicrohttpd-dev ninja-build pkg-config libsecp256k1-dev libsodium-dev  liblz4-dev
+    apt-get install -y build-essential cmake clang openssl libssl-dev zlib1g-dev gperf wget git curl libreadline-dev ccache libmicrohttpd-dev ninja-build pkg-config libsecp256k1-dev libsodium-dev liblz4-dev autotools-dev autoconf automake libtool
 
 # Clone the TON repository and check out a specific branch
 ARG TON_REPO=ton-blockchain
@@ -17,7 +17,7 @@ RUN git clone --recurse-submodules https://github.com/${TON_REPO}/ton.git . && \
 RUN mkdir build && \
     cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release -GNinja .. && \
-    ninja -j 0 dht-resolve dht-ping-servers
+    ninja -j 2 dht-resolve dht-ping-servers
 
 # Second Stage: Frontend Build (frontend_builder)
 FROM node:18-bullseye as frontend_builder
@@ -31,7 +31,7 @@ RUN yarn install && \
     yarn build
 
 # Third Stage: Final Runtime Environment Setup
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Install runtime dependencies
 RUN apt-get update && \
