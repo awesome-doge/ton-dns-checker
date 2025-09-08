@@ -1,70 +1,124 @@
 # TON DNS Checker
 
-TON DNS Checker is a robust application designed to provide DNS checking capabilities within the TON (Telegram Open Network) blockchain environment. It leverages Redis for caching and includes a front-end interface for easy interaction.
+A comprehensive application for DNS checking capabilities within the TON (Telegram Open Network) blockchain ecosystem. The application features a FastAPI backend with Redis caching and a React TypeScript frontend for seamless user interaction.
 
 ## Features
 
-- **DHT Node Status Checking**: Fetches and displays the status of Distributed Hash Table (DHT) nodes.
-- **ADNL Address Resolution**: Allows the resolution of Abstract Data Network Layer (ADNL) addresses.
-- **Liteserver Information Retrieval**: Retrieves and displays information about liteservers.
-- **Domain Resolution for Liteservers**: Resolves domains for liteservers, crucial for navigating and interacting within the TON network.
+- **DHT Node Status Monitoring**: Real-time status checking of Distributed Hash Table (DHT) nodes across the TON network
+- **ADNL Address Resolution**: Resolve Abstract Data Network Layer (ADNL) addresses to their corresponding network information
+- **Liteserver Management**: Retrieve and monitor TON liteserver information and connectivity status
+- **Domain Resolution**: Resolve TON domains (.ton) to various resources including sites and wallet addresses
+- **Caching Layer**: Redis-powered caching for improved performance and reduced blockchain queries
+
+## Architecture
+
+The application consists of three main components:
+
+- **Backend API**: FastAPI service providing REST endpoints for TON network operations
+- **Frontend Interface**: React TypeScript application with Material-UI components
+- **Cache Layer**: Redis service for optimized data retrieval and storage
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
 ### Prerequisites
 
-- Docker and Docker Compose installed on your system.
-- Basic understanding of Docker, FastAPI, and Redis.
+- Docker and Docker Compose
+- Git
+- Basic familiarity with TON blockchain concepts
 
-### Installation and Running the Application
+### Quick Start
 
 1. **Clone the Repository**
 
-   ```sh
-   git clone https://github.com/your-repository/TON-DNS-Checker.git
+   ```bash
+   git clone <repository-url>
+   cd ton-dns-checker
    ```
 
-2. **Navigate to the Project Directory**
+2. **Environment Setup**
 
-   ```sh
-   cd TON-DNS-Checker
+   Create a `.env` file in the project root:
+
+   ```env
+   REACT_APP_API_URL="http://localhost:8090"
    ```
 
-3. **Start the Services**
+3. **Deploy with Script** (Recommended)
 
-   Use Docker Compose to build and start the services defined in the `docker-compose.yml` file.
-
-   ```sh
+   ```bash
    sudo bash deploy.sh
    ```
 
-   ```sh
+   Or manually with Docker Compose:
+
+   ```bash
    docker-compose up --build
    ```
 
-   These commands build the images for the services (if not already built) and start the services. Specifically, it sets up the following:
+### Service Access
 
-   - A Redis caching service.
-   - A DNS checker service that runs on port 8090.
-   - A front-end service accessible on port 3090.
+After deployment, the following services will be available:
 
-4. **Verify the Services**
+- **API Documentation**: `http://localhost:8090/docs` - Interactive Swagger/OpenAPI documentation
+- **Frontend Interface**: `http://localhost:3090` - Web application interface
+- **Health Check**: `http://localhost:8090/healthcheck` - Service health verification
 
-   Once the services are up and running, you can navigate to `http://localhost:8090/healthcheck` to check the health of the DNS checker service and `http://localhost:3090` to access the front-end interface.
+## API Endpoints
 
-## Usage
+The application provides the following REST endpoints:
 
-- Access the front-end interface at `http://localhost:8090/docs`.
-- The interface will interact with the DNS checker backend to perform functionalities like DHT node status checking, ADNL address resolution, and more.
+- `GET /dhts` - Retrieve DHT node status information
+- `GET /resolve?adnl=<address>` - Resolve ADNL addresses
+- `GET /liteservers` - Get liteserver information
+- `GET /ls_resolve?domain=<domain>&category=<type>` - Resolve TON domains
 
-## Environment Configuration
+## Development
 
-Create a `.env` file in the project root directory and add the following code:
+### Backend Development
 
-```env
-REACT_APP_API_URL="https://dns-api.doge.tg"
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Run development server
+uvicorn dnschecker.main:app --host 0.0.0.0 --port 8090 --reload
 ```
 
-This environment variable configures the API URL for the front-end interface to communicate with the backend DNS checker service.
+### Frontend Development
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+```
+
+## Configuration
+
+### Environment Variables
+
+- `REACT_APP_API_URL`: API endpoint URL for frontend communication
+- `TON_LITESERVER_CONFIG`: Path to TON network configuration file (defaults to `private/mainnet.json`)
+
+### Network Configuration
+
+The application uses TON network configuration files located in the `private/` directory:
+
+- `mainnet.json` - Production TON network configuration
+- `testnet.json` - Test TON network configuration
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
